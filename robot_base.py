@@ -11,7 +11,13 @@ class RobotBase():
         self.conn.send_data(cmd)
         recv = self.conn.recv_ctrl_data(5)
         print("recv data from robot : %s" % recv)
-        return recv.decode("utf-8")[0:-1]
+        result = recv.decode("utf-8")
+        if result.endswith(" "):
+            return result[0:-1]
+        elif result == "ok":
+            return True
+        else:
+            return result
 
     def recv_push_data(self):
         recv = self.conn.recv_push_data(5)
@@ -22,3 +28,4 @@ class RobotBase():
         recv = self.conn.recv_event_data(5)
         print("recv data from robot : %s" % recv)
         return recv
+
